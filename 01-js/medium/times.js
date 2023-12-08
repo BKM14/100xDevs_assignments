@@ -9,7 +9,7 @@ There is no automated test for this one, this is more for you to understand time
 */
 
 const startTime = new Date();
-const startMilliSeconds = startTime.getMilliseconds();
+const startMilliSeconds = startTime.getTime();
 
 function calculateTime(n) {
     let sumTillNum = 0;
@@ -19,10 +19,10 @@ function calculateTime(n) {
     return sumTillNum;
 }
 
-console.log('Sum: ', calculateTime(100000));
+console.log('Sum: ', calculateTime(10000000));
 
 const endTime = new Date();
-const endMilliSeconds = endTime.getMilliseconds();
+const endMilliSeconds = endTime.getTime();
 
 console.log(endMilliSeconds - startMilliSeconds, " milliseconds");
 
