@@ -39,11 +39,77 @@
 
   Testing the server - run `npm run test-todoServer` command in terminal
  */
-  const express = require('express');
-  const bodyParser = require('body-parser');
-  
-  const app = express();
-  
-  app.use(bodyParser.json());
-  
-  module.exports = app;
+const express = require('express');
+
+const app = express();
+
+app.use(express.json());
+
+let toDo_List = [];
+
+app.get("/todos", (req, res) => {
+  res.json(toDo_List);
+});
+
+app.get("/todos/:id", (req, res) => {
+  const id = req.params.id;
+  toDo_List.forEach((todo) => {
+    if (todo.id == id) {
+      res.json(todo);
+    }
+  })
+  res.sendStatus(404);
+});
+
+app.post("/todos", (req, res) => {
+  const todoId = generateUniqueId()
+  toDo_List.push({
+    "id" : todoId,
+    "title" : req.body.title,
+    "description" : req.body.description
+  })
+  res.status(201).json({id : todoId});
+});
+
+app.put("/todos/:id", (req, res) => {
+  const id = req.params.id;
+  const index = toDo_List.findIndex((todo) => {
+    todo.id == id;
+  })
+  if (index == -1) {
+    res.sendStatus(404);
+  } else {
+    toDo_List[index].title = req.body.title;
+    toDo_List[index].description = req.body.description;
+    res.json(toDo_List[index]);
+  }
+});
+
+app.delete("/todos/:id", (req, res) => {
+  for (let i = 0; i < toDo_List.length; i++) {
+    if (toDo_List[i].id == req.params.id) {
+      toDo_List.splice(i, 1);
+      res.sendStatus(200);
+    }
+  }
+  res.sendStatus(404);
+})
+
+app.use("*", (req, res) => {
+  res.sendStatus(404);
+})
+
+//app.listen(3000);
+
+function generateUniqueId() {
+  let id = Math.floor((Math.random() * 100) + 1);
+  for (const todo in toDo_List) {
+    if (id === todo.id) {
+      generateUniqueId();
+    }
+  }
+  return id;
+}
+
+
+module.exports = app;
