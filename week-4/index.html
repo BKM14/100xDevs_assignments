@@ -8,7 +8,7 @@
     let oldTodoState = [];
 
     function addTodoToDom() {
-      
+
     }
 
     function removeTodoFromDom(todo) {
@@ -16,7 +16,7 @@
     }
 
     function updateTodoInDom(oldTodo, newTodo) {
-        
+
     }
 
     function updateState(newTodos) {
@@ -26,6 +26,12 @@
       // 2. deleted
       // 3. updated
       const added = [];
+      newTodos.forEach((todo) => {
+        for (let i = 0; i < newTodos.length; i++) {
+        if (oldTodoState[i] === todo)
+      }
+      })
+      
       const deleted = [];
       const updated = [];
       // calculate these 3 arrays
