@@ -94,7 +94,7 @@ export async function createPost(c: Context) {
       message: 'Post successfully',
       post: {
         id: res.id,
-        title: res.title,
+        title: res.title, 
         body: res.body,
         tags: res.tags.map((tag) => tag.tag),
         createdAt: res.createdAt,
