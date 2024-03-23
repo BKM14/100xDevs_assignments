@@ -4,9 +4,12 @@ import { Context } from 'hono';
 import { userSignIn, userSignUp } from '../zod/Schemes';
 import { Jwt } from 'hono/utils/jwt';
 
-const prisma = new PrismaClient().$extends(withAccelerate());
 
 export async function userSignup(c: Context) {
+    const prisma = new PrismaClient({
+        datasourceUrl: c.env.DATABASE_URL
+    }).$extends(withAccelerate());
+
     const secretPassword = c.env.JWT_PASSWORD;
     const inputPayload : {
         username: string,
@@ -51,6 +54,11 @@ export async function userSignup(c: Context) {
 }
 
 export async function userSignin(c: Context) {
+
+    const prisma = new PrismaClient({
+        datasourceUrl: c.env.DATABASE_URL
+    }).$extends(withAccelerate());
+
     const secretPassword = c.env.JWT_PASSWORD
     const inputPayload : {
         email: string,
@@ -86,6 +94,11 @@ export async function userSignin(c: Context) {
 }
 
 export async function userProfile(c : Context) {
+
+    const prisma = new PrismaClient({
+        datasourceUrl: c.env.DATABASE_URL
+    }).$extends(withAccelerate());
+
     try {
         const userId = c.req.param("id");
         const user = await prisma.user.findFirst({
@@ -110,6 +123,11 @@ export async function userProfile(c : Context) {
 }
 
 export async function getUsers(c : Context) {
+
+    const prisma = new PrismaClient({
+        datasourceUrl: c.env.DATABASE_URL
+    }).$extends(withAccelerate());
+
     try {
         const users = await prisma.user.findMany();
         if (users == null || users == undefined) {
@@ -127,9 +145,8 @@ export async function getUsers(c : Context) {
                 }}
             )
         })
-
     } catch(e) {
         console.log(e);
-        return c.json("Error fetching users");
+        return c.json({Error: e});
     }
 }

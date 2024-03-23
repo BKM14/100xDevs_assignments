@@ -2,9 +2,13 @@ import { PrismaClient } from '@prisma/client/edge'
 import { withAccelerate } from '@prisma/extension-accelerate'
 import { Context } from 'hono';
 
-const prisma = new PrismaClient().$extends(withAccelerate());
 
 export async function getPosts(c : Context) {
+
+    const prisma = new PrismaClient({
+        datasourceUrl: c.env.DATABASE_URL
+    }).$extends(withAccelerate());
+
     try {
         const res = await prisma.post.findMany({
             include: {
@@ -30,6 +34,11 @@ export async function getPosts(c : Context) {
 }
 
 export async function getUserPosts(c : Context) {
+
+    const prisma = new PrismaClient({
+        datasourceUrl: c.env.DATABASE_URL
+    }).$extends(withAccelerate());
+
     const userId = c.get("userId");
     try {
         const userPosts = await prisma.post.findMany({
@@ -50,6 +59,11 @@ export async function getUserPosts(c : Context) {
 }
 
 export async function createPost(c : Context) {
+
+    const prisma = new PrismaClient({
+        datasourceUrl: c.env.DATABASE_URL
+    }).$extends(withAccelerate());
+
     try {
         const inputPayload : {
             title: string
@@ -94,6 +108,11 @@ export async function createPost(c : Context) {
 }
 
 export async function getPost(c : Context) {
+
+    const prisma = new PrismaClient({
+        datasourceUrl: c.env.DATABASE_URL
+    }).$extends(withAccelerate());
+
     const postId = c.req.param("id");
     const userId = c.get('userId');
     try {
@@ -128,6 +147,11 @@ export async function getPost(c : Context) {
 }
 
 export async function updatePost(c : Context) {
+
+    const prisma = new PrismaClient({
+        datasourceUrl: c.env.DATABASE_URL
+    }).$extends(withAccelerate());
+
     const postId = c.req.param("id");
     const userId = c.get("userId");
 
@@ -190,6 +214,11 @@ export async function updatePost(c : Context) {
 }
 
 export async function deletePost(c: Context) {
+
+    const prisma = new PrismaClient({
+        datasourceUrl: c.env.DATABASE_URL
+    }).$extends(withAccelerate());
+
     const postId = c.req.param('id');
     const userId = c.get('userId');
 
